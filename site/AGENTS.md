@@ -4,7 +4,7 @@
 
 ## Project overview
 
-This is a **static, single-page interactive web experience** about colour-vision deficiency (CVD). The user picks a type of colour blindness (or is assigned one secretly), then walks through a day-in-the-life story made of illustrated scenes, quizzes, and a small CVD-aware palette simulator.
+This is a **static, single-page interactive web experience** about colour-vision deficiency (CVD). The user enters through a cinematic intro, picks a type of colour blindness (or is assigned one secretly), then walks through a day-in-the-life story made of illustrated scenes, quizzes, a Voices section with real community quotes, and a small CVD-aware palette simulator.
 
 Key facts:
 
@@ -88,7 +88,7 @@ Follow the existing conventions:
 
 Before committing changes, manually verify at least:
 
-1. **Navigation**: every `[data-go]` button routes to the correct section.
+1. **Navigation**: every `[data-go]` button routes to the correct section, including `#intro` → `#hero` and `#twist` → `#voices` → `#lab`.
 2. **Languages**: toggle EN / 中文 and confirm all visible text updates, including SVG text and HTML content.
 3. **Vision modes**: select each CVD type and confirm the `.simfx` elements change; check the "surprise me" hidden mode reveal on the sunset screen.
 4. **Reduced motion**: enable OS/browser reduced motion and confirm animations, ambient canvas, custom cursor, and tilt effects are disabled.

@@ -56,7 +56,17 @@
 </header>
 
 <main>
-  <section class="screen active" id="hero" data-hud="0" style="position:relative">
+  <section class="screen active" id="intro" data-hud="0">
+    <div class="intro-glow"></div>
+    <div class="wrap">
+      <div class="kicker" data-i="intro.kicker"></div>
+      <h1 data-i-html="intro.title"></h1>
+      <p class="sub" data-i="intro.sub"></p>
+      <button class="btn ghost intro-cta" data-i="intro.cta"></button>
+    </div>
+  </section>
+
+  <section class="screen" id="hero" data-hud="0" style="position:relative">
     <div class="orbs"><i></i><i></i><i></i></div>
     <div id="heroGlow"></div>
     <div class="wrap">
@@ -357,7 +367,39 @@
       </div>
       <p class="twquote" data-i-html="tw.quote"></p>
       <div class="kicker" style="margin-top:26px" data-i="tw.src"></div>
-      <button class="btn" data-go="lab" data-i="tw.next"></button>
+      <button class="btn" data-go="voices" data-i="tw.next"></button>
+    </div>
+  </section>
+
+  <section class="screen" id="voices" data-hud="0">
+    <div class="wrap">
+      <div class="kicker" data-i="voices.kicker"><span class="secnum">06</span></div>
+      <h2 class="title" style="margin-top:14px" data-i="voices.title"></h2>
+      <p class="lede" data-i="voices.lede"></p>
+      <div class="voices-grid">
+        <div class="vmessage">
+          <div class="vmeta"><b data-i="v1.name"></b><span data-i="v1.context"></span></div>
+          <p data-i="v1.quote"></p>
+        </div>
+        <div class="vmessage">
+          <div class="vmeta"><b data-i="v2.name"></b><span data-i="v2.context"></span></div>
+          <p data-i="v2.quote"></p>
+        </div>
+        <div class="vmessage">
+          <div class="vmeta"><b data-i="v3.name"></b><span data-i="v3.context"></span></div>
+          <p data-i="v3.quote"></p>
+        </div>
+        <div class="vmessage">
+          <div class="vmeta"><b data-i="v4.name"></b><span data-i="v4.context"></span></div>
+          <p data-i="v4.quote"></p>
+        </div>
+        <div class="vmessage wide">
+          <div class="vmeta"><b data-i="v5.name"></b><span data-i="v5.context"></span></div>
+          <p data-i="v5.quote"></p>
+        </div>
+      </div>
+      <p class="voices-note" data-i="voices.note"></p>
+      <button class="btn" data-go="lab" data-i="common.continue"></button>
     </div>
   </section>
 
@@ -889,6 +931,14 @@
       <h2 data-i-html="done.title"></h2>
       <p class="lede" data-i="done.lede"></p>
       <div class="spectrum"><i style="background:#ff5b4a"></i><i style="background:#ff8a4c"></i><i style="background:#ffd86b"></i><i style="background:#7fd36b"></i><i style="background:#19c2c2"></i><i style="background:#46a6ff"></i><i style="background:#9b6bff"></i></div>
+      <div class="checklist">
+        <h3 data-i="done.check.title"></h3>
+        <ul>
+          <li data-i="done.check.1"></li>
+          <li data-i="done.check.2"></li>
+          <li data-i="done.check.3"></li>
+        </ul>
+      </div>
       <div class="done-actions"><button class="btn" id="restartBtn" data-i="done.restart"></button></div>
       <footer data-i-html="done.footer"></footer>
     </div>

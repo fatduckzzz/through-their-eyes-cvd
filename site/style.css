@@ -606,16 +606,51 @@ body.cursor-on #cursorDot,body.cursor-on #cursorRing{opacity:.9}
   100%{opacity:0;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(0)}
 }
 
+/* ---------- intro overlay (ten.375.studio inspired) ---------- */
+#intro{position:relative;cursor:pointer;transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1),filter .9s ease}
+#intro.exit{opacity:0;transform:scale(1.04);filter:blur(8px);pointer-events:none}
+#intro .intro-glow{position:absolute;inset:-30%;z-index:-1;background:radial-gradient(ellipse at 50% 30%,rgba(123,58,160,.25),transparent 55%),radial-gradient(ellipse at 30% 70%,rgba(255,138,76,.18),transparent 50%),radial-gradient(ellipse at 70% 60%,rgba(70,166,255,.15),transparent 50%);filter:blur(60px);animation:introPulse 12s ease-in-out infinite alternate;pointer-events:none}
+@keyframes introPulse{0%{transform:scale(1)}100%{transform:scale(1.1) rotate(2deg)}}
+#intro .kicker{margin-bottom:26px}
+#intro .sub{max-width:44ch;margin:24px auto 0;color:var(--dim)}
+#intro .btn{margin-top:40px;animation:introPulseBtn 2.6s ease-in-out infinite}
+@keyframes introPulseBtn{0%,100%{opacity:.85}50%{opacity:1}}
+
+/* ---------- voices section (Voyeur Vérité + Ahmed Yassen inspired) ---------- */
+#voices .voices-grid{margin-top:46px;display:grid;grid-template-columns:repeat(2,1fr);gap:18px;text-align:left;max-width:920px;margin-left:auto;margin-right:auto}
+#voices .vmessage{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;position:relative;transition:.28s}
+#voices .vmessage:hover{border-color:rgba(255,255,255,.18);transform:translateY(-4px)}
+#voices .vmessage.wide{grid-column:1 / -1}
+#voices .vmeta{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+#voices .vmeta b{font-family:var(--serif);font-weight:400;font-size:1.15rem;color:var(--paper)}
+#voices .vmeta span{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+#voices .vmessage p{font-size:1.02rem;line-height:1.55;color:var(--dim);font-style:italic}
+#voices .vmessage p::before{content:"\"";color:var(--gold);font-family:var(--serif);font-size:1.6rem;line-height:.6;margin-right:4px}
+#voices .voices-note{margin-top:28px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+html[lang="zh"] #voices .vmeta span,html[lang="zh"] #voices .voices-note{font-family:var(--sans);letter-spacing:.04em}
+@media(max-width:760px){#voices .voices-grid{grid-template-columns:1fr}}
+
+/* ---------- action checklist ---------- */
+.checklist{max-width:640px;margin:34px auto 0;background:linear-gradient(180deg,rgba(255,178,74,.08),transparent);border:1px solid var(--line);border-radius:18px;padding:26px 28px}
+.checklist h3{font-family:var(--serif);font-weight:400;font-size:1.35rem;margin-bottom:18px;color:var(--paper)}
+html[lang="zh"] .checklist h3{font-weight:600}
+.checklist ul{list-style:none;text-align:left}
+.checklist li{position:relative;padding-left:34px;margin-top:14px;font-size:1rem;color:var(--dim);line-height:1.5}
+.checklist li::before{content:"";position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;border:2px solid var(--gold)}
+.checklist li:nth-child(2)::before{border-color:var(--protan)}
+.checklist li:nth-child(3)::before{border-color:var(--deutan)}
+
 /* ---------- chip/likert/win/labcard micro lift kept smooth ---------- */
 .likert button,.chips button{transition:transform .2s cubic-bezier(.2,.7,.2,1),border-color .2s,background .2s,color .2s}
 .likert button:hover,.chips button:hover{transform:translateY(-2px)}
 
 /* ---------- respect reduced motion for every new effect ---------- */
 @media(prefers-reduced-motion:reduce){
-  #cursorDot,#cursorRing,.sparkle-burst,.scene .stage::before,#hero::before,.scene-particles,.click-spark{display:none!important}
+  #cursorDot,#cursorRing,.sparkle-burst,.scene .stage::before,#hero::before,.scene-particles,.click-spark,#intro .intro-glow{display:none!important}
   .world > svg,.formworld{transform:none!important;transition:none!important}
   .vcard:hover,.win:hover,.choice:hover,.btn:hover{transform:none!important}
   .reveal-on-scroll{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+  #intro .btn{animation:none!important}
   #hero::before{animation:none!important}
 }
 @media(max-width:760px){

@@ -524,16 +524,99 @@ body.cursor-on #cursorDot,body.cursor-on #cursorRing{opacity:.9}
 .cncard.reveal-on-scroll.in:nth-child(3){transition-delay:180ms}
 .cncard.reveal-on-scroll.in:nth-child(4){transition-delay:270ms}
 
+/* ======================================================================
+   REACT BITS INSPIRED EFFECTS — aurora, counters, spotlight cards,
+   scene particles, global click spark. Added on top of existing fancy-up
+   layer; all respect prefers-reduced-motion.
+   ====================================================================== */
+
+/* ---------- aurora background for hero ---------- */
+#hero::before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  z-index:-2;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(123,58,160,.32), transparent 55%),
+    radial-gradient(ellipse at 70% 60%, rgba(255,138,76,.22), transparent 50%),
+    radial-gradient(ellipse at 40% 80%, rgba(70,166,255,.20), transparent 50%),
+    radial-gradient(ellipse at 80% 10%, rgba(255,91,74,.16), transparent 45%);
+  filter:blur(70px);
+  animation:auroraMove 18s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes auroraMove{
+  0%{transform:translate(0,0) scale(1)}
+  100%{transform:translate(4%,-3%) scale(1.08)}
+}
+
+/* ---------- spotlight gradient on CVD cards ---------- */
+.vcard{position:relative;overflow:hidden}
+.vcard::before{
+  content:"";
+  position:absolute;
+  top:var(--sy,50%);
+  left:var(--sx,50%);
+  width:260px;
+  height:260px;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(255,255,255,.12), transparent 65%);
+  opacity:0;
+  transition:opacity .35s ease;
+  pointer-events:none;
+  z-index:1;
+}
+.vcard:hover::before{opacity:1}
+
+/* ---------- particle canvas for scenes ---------- */
+.scene-particles{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
+  opacity:.55;
+}
+
+/* ---------- hero stat counters ---------- */
+.stat-strip b{transition:color .4s ease}
+
+/* ---------- global click spark ---------- */
+.click-spark{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:9999;
+}
+.click-spark i{
+  position:absolute;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:var(--gold);
+  opacity:0;
+  animation:sparkOut .55s ease-out forwards;
+}
+@keyframes sparkOut{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(0)}
+}
+
 /* ---------- chip/likert/win/labcard micro lift kept smooth ---------- */
 .likert button,.chips button{transition:transform .2s cubic-bezier(.2,.7,.2,1),border-color .2s,background .2s,color .2s}
 .likert button:hover,.chips button:hover{transform:translateY(-2px)}
 
 /* ---------- respect reduced motion for every new effect ---------- */
 @media(prefers-reduced-motion:reduce){
-  #cursorDot,#cursorRing,.sparkle-burst,.scene .stage::before{display:none!important}
+  #cursorDot,#cursorRing,.sparkle-burst,.scene .stage::before,#hero::before,.scene-particles,.click-spark{display:none!important}
   .world > svg,.formworld{transform:none!important;transition:none!important}
   .vcard:hover,.win:hover,.choice:hover,.btn:hover{transform:none!important}
   .reveal-on-scroll{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+  #hero::before{animation:none!important}
 }
 @media(max-width:760px){
   #sunarc{display:none}

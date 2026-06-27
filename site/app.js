@@ -456,4 +456,161 @@
     if (ld) ld.classList.add('draining');
   }, 1000);
 
+  /* ======================================================================
+     REACT BITS INSPIRED EFFECTS — aurora, counters, spotlight cards,
+     scene particles, extended scroll reveal, global click spark.
+     All respect prefers-reduced-motion.
+     ====================================================================== */
+
+  /* ---------- hero stat counter animation ---------- */
+  (function(){
+    if (reduce) return;
+    var strip = document.querySelector('.stat-strip');
+    if (!strip) return;
+    var targets = [].slice.call(strip.querySelectorAll('b'));
+    if (!targets.length) return;
+    var done = false;
+    function parseStat(s){
+      var frac = s.match(/^(\d+)\/(\d+)(.*)$/);
+      if (frac) return {type:'frac', num:parseInt(frac[1],10), denom:parseInt(frac[2],10), suffix:frac[3]};
+      var plain = s.match(/^(\d[\d,]*\.?\d*)([^\d.]*)$/);
+      if (plain) return {type:'num', num:parseFloat(plain[1].replace(/,/g,'')), suffix:plain[2]};
+      return {type:'raw', text:s};
+    }
+    var stats = targets.map(function(el){ return {el:el, info:parseStat(el.textContent)}; });
+    function run(){
+      if (done) return; done = true;
+      var dur = 1400, start = performance.now();
+      stats.forEach(function(s){ s.original = s.el.textContent; });
+      function tick(now){
+        var p = Math.min(1, (now - start) / dur);
+        var eased = 1 - Math.pow(1 - p, 3);
+        stats.forEach(function(s){
+          if (s.info.type === 'raw') return;
+          if (s.info.type === 'frac'){
+            var cur = Math.max(1, Math.round(s.info.num * eased));
+            s.el.textContent = cur + '/' + s.info.denom + s.info.suffix;
+          } else {
+            var cur = s.info.num * eased;
+            s.el.textContent = (s.info.num % 1 === 0 ? Math.round(cur) : cur.toFixed(1)) + s.info.suffix;
+          }
+        });
+        if (p < 1) requestAnimationFrame(tick);
+        else stats.forEach(function(s){ s.el.textContent = s.original; });
+      }
+      requestAnimationFrame(tick);
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ if (en.isIntersecting) { run(); io.disconnect(); } });
+      }, {threshold:0.5});
+      io.observe(strip);
+    } else {
+      run();
+    }
+  })();
+
+  /* ---------- spotlight gradient on CVD cards ---------- */
+  (function(){
+    if (reduce) return;
+    document.querySelectorAll('.vcard').forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--sx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        card.style.setProperty('--sy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      });
+    });
+  })();
+
+  /* ---------- particle background for scenes ---------- */
+  (function(){
+    if (reduce) return;
+    var scenes = [].slice.call(document.querySelectorAll('.scene'));
+    if (!scenes.length) return;
+    var canvases = [];
+    scenes.forEach(function(scene){
+      var stage = scene.querySelector('.stage');
+      if (!stage) return;
+      var cvs = document.createElement('canvas');
+      cvs.className = 'scene-particles';
+      stage.insertBefore(cvs, stage.firstChild);
+      canvases.push({cvs:cvs, ctx:cvs.getContext('2d'), particles:[]});
+    });
+    function resize(){
+      canvases.forEach(function(o){
+        var r = o.cvs.getBoundingClientRect();
+        o.cvs.width = r.width;
+        o.cvs.height = r.height;
+      });
+    }
+    function initParticles(o){
+      o.particles = [];
+      var count = Math.max(12, Math.floor((o.cvs.width * o.cvs.height) / 25000));
+      for (var i = 0; i < count; i++){
+        o.particles.push({
+          x:Math.random()*o.cvs.width,
+          y:Math.random()*o.cvs.height,
+          r:.6 + Math.random()*1.2,
+          vy:.15 + Math.random()*.25,
+          alpha:.15 + Math.random()*.35
+        });
+      }
+    }
+    resize();
+    canvases.forEach(initParticles);
+    window.addEventListener('resize', function(){ resize(); canvases.forEach(initParticles); });
+    var running = true;
+    function draw(){
+      if (!running) return;
+      canvases.forEach(function(o){
+        var ctx = o.ctx, w = o.cvs.width, h = o.cvs.height;
+        ctx.clearRect(0,0,w,h);
+        o.particles.forEach(function(p){
+          p.y -= p.vy;
+          if (p.y < -10) { p.y = h + 10; p.x = Math.random()*w; }
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle = 'rgba(243,239,230,' + p.alpha + ')';
+          ctx.fill();
+        });
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+    document.addEventListener('visibilitychange', function(){ running = !document.hidden; if (running) draw(); });
+  })();
+
+  /* ---------- extend reveal-on-scroll to headings and narrative text ---------- */
+  (function(){
+    if (reduce) return;
+    var selectors = '#choose h2.title, #choose .lede, #choose .choose-note, #brief .narr, .scene .panel h2, .scene .panel .q, #done h2, #done .lede, #lab h2.title, #lab .lede, #wins h2.title, #wins .lede, #ctool h2.title';
+    document.querySelectorAll(selectors).forEach(function(el){
+      el.classList.add('reveal-on-scroll');
+    });
+  })();
+
+  /* ---------- global subtle click spark ---------- */
+  (function(){
+    if (reduce) return;
+    var host = document.createElement('div');
+    host.className = 'click-spark';
+    document.body.appendChild(host);
+    var colors = ['var(--gold)','var(--protan)','var(--deutan)','var(--tritan)'];
+    document.addEventListener('click', function(e){
+      if (e.target.closest('a,button,.choice,.field,input,.switch')) return;
+      for (var i = 0; i < 5; i++){
+        var s = document.createElement('i');
+        var ang = Math.random()*6.283, dist = 18 + Math.random()*22;
+        s.style.setProperty('--sx', (Math.cos(ang)*dist).toFixed(0)+'px');
+        s.style.setProperty('--sy', (Math.sin(ang)*dist).toFixed(0)+'px');
+        s.style.left = e.clientX + 'px';
+        s.style.top = e.clientY + 'px';
+        s.style.background = colors[Math.floor(Math.random()*colors.length)];
+        s.style.animationDelay = (Math.random()*0.08).toFixed(2)+'s';
+        host.appendChild(s);
+        setTimeout(function(el){ return function(){ el.remove(); }; }(s), 600);
+      }
+    });
+  })();
+
 })();

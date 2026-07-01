@@ -4,7 +4,7 @@
 
 ## Project overview
 
-This is a **static, single-page interactive web experience** about colour-vision deficiency (CVD). The user enters through a cinematic intro, picks a type of colour blindness (or is assigned one secretly), then walks through a day-in-the-life story made of illustrated scenes, quizzes, a Voices section with real community quotes, and a small CVD-aware palette simulator.
+This is a **static, single-page interactive web experience** about colour-vision deficiency (CVD). The user picks a type of colour blindness (or is assigned one secretly), then walks through a day-in-the-life story made of illustrated scenes, quizzes, a Voices section with real community quotes, and a small CVD-aware palette simulator.
 
 Key facts:
 
@@ -22,7 +22,19 @@ Key facts:
 ├── i18n.js           # Translation dictionary: var I18N = { en: {...}, zh: {...} }
 ├── style.css         # All styling, animations, responsive breakpoints
 ├── cividis.png       # Cividis colour-map reference image
-└── wcag_aa.png       # WCAG AA conformance badge image
+├── wcag_aa.png       # WCAG AA conformance badge image
+└── assets/           # Icons, photos and screenshots used in the wins section
+    ├── *_icon.svg    # Product logos (Gmail, Spotify, Trello, Apple, Android)
+    ├── spotify_dot.jpg
+    ├── trello_colorblind_toggle.gif
+    ├── google_old_*.png
+    ├── google_new_*.png
+    ├── google-workspace-icons-redesign-side-by-side-divider.webp
+    ├── google images too similar.jpg
+    ├── japan_traffic_light.png
+    ├── japan_pedestrian.png
+    ├── tube_map.png
+    └── enchroma_with.jpg
 ```
 
 `index.html` loads `i18n.js` first, then `app.js`:
@@ -88,7 +100,7 @@ Follow the existing conventions:
 
 Before committing changes, manually verify at least:
 
-1. **Navigation**: every `[data-go]` button routes to the correct section, including `#intro` → `#hero` and `#twist` → `#voices` → `#lab`.
+1. **Navigation**: every `[data-go]` button routes to the correct section, including `#twist` → `#voices` → `#lab`.
 2. **Languages**: toggle EN / 中文 and confirm all visible text updates, including SVG text and HTML content.
 3. **Vision modes**: select each CVD type and confirm the `.simfx` elements change; check the "surprise me" hidden mode reveal on the sunset screen.
 4. **Reduced motion**: enable OS/browser reduced motion and confirm animations, ambient canvas, custom cursor, and tilt effects are disabled.

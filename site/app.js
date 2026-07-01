@@ -25,7 +25,7 @@
   });
 
   var hud=document.getElementById('hud'), prog=document.getElementById('prog');
-  var order=['intro','hero','choose','brief','w','b','c','f','e','m','g','t','sunset','flamingo','twist','voices','lab','wins','ctool','done'];
+  var order=['hero','choose','brief','w','b','c','f','e','m','g','t','sunset','flamingo','twist','voices','lab','wins','ctool','done'];
   var state={type:null,hidden:false,baseline:5,post:5,confidence:null,moment:null,open:"",recorded:false,
              shirt:null,frictions:0,correct:0,guesses:0,openedUp:null};
   var twTimer=null;
@@ -53,22 +53,6 @@
     if(id==='twist') setTimeout(animateTwist,120);
   }
   document.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click',function(){ show(b.getAttribute('data-go')); }); });
-
-  /* ---------- intro overlay ---------- */
-  (function(){
-    var intro = document.getElementById('intro');
-    if (!intro) return;
-    function enter(){
-      if (reduce) {
-        show('hero');
-      } else {
-        intro.classList.add('exit');
-        setTimeout(function(){ show('hero'); }, 900);
-      }
-    }
-    intro.addEventListener('click', enter);
-    intro.querySelector('.intro-cta').addEventListener('click', function(e){ e.stopPropagation(); enter(); });
-  })();
 
   function addFriction(n){ state.frictions+=n; document.getElementById('hudFr').textContent=state.frictions; }
 
